@@ -7,7 +7,15 @@ public class PlayerMovement : MonoBehaviour
     public float horizontalForce = 500f;
     public float jumpForce = 100f;
     public bool hasJumped = true;
-    
+    public float regularForce = 4000f;
+    public float slowedForce = 2000f;
+
+    public Material PlayerColour;
+    public Material ObstacleColour;
+    public Material SlowedColour;
+
+    public bool pickupActive = false;
+
     // Update is called once per frame
     void FixedUpdate()
     {
@@ -23,17 +31,49 @@ public class PlayerMovement : MonoBehaviour
             playerRB.AddForce(-horizontalForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
         }
 
-        if (Input.GetKey("space") && hasJumped == false)
-        {
-            playerRB.AddForce(0, jumpForce * Time.deltaTime, 0, ForceMode.VelocityChange);
-            hasJumped = true;
-            Debug.Log("SPACE");
-        }
-
         if (playerRB.position.y < -1f)
         {
             FindObjectOfType<GameManager>().LevelFailed();
         }
 
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "SlowSpeed")
+        {
+            pickupActive = true;
+            
+            Destroy(other.gameObject);
+            gameObject.GetComponent<MeshRenderer>().material = SlowedColour;
+            forwardForce = slowedForce;
+            Invoke("restoreSpeed", 5);
+        }
+
+        if (other.tag == "PhaseThrough")
+        {
+            pickupActive = true;
+
+            Destroy(other.gameObject);
+            gameObject.GetComponent<MeshRenderer>().material = ObstacleColour;
+            gameObject.layer = 10;
+            Invoke("restoreLayer", 5);
+        }
+    }
+
+    private void restoreSpeed()
+    {
+        pickupActive = false;
+
+        forwardForce = regularForce;
+        gameObject.GetComponent<MeshRenderer>().material = PlayerColour;
+    }
+
+    private void restoreLayer()
+    {
+        pickupActive = false;
+
+        gameObject.layer = 0;
+        gameObject.GetComponent<MeshRenderer>().material = PlayerColour;
     }
 }

@@ -126,6 +126,13 @@ MonoBehaviour:
   playerRB: {fileID: 5556571954577322156}
   forwardForce: 6000
   horizontalForce: 120
+  jumpForce: 100
+  hasJumped: 1
+  regularForce: 4000
+  slowedForce: 1000
+  PlayerColour: {fileID: 2100000, guid: e83014e9415a95b4db167538cb37acd1, type: 2}
+  ObstacleColour: {fileID: 2100000, guid: fab78e7138790f144998c9a0e7f4ecef, type: 2}
+  SlowedColour: {fileID: 2100000, guid: 5c80a9dc16ff2a942990e94bca52ceab, type: 2}
 --- !u!114 &5556571954577322154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -139,3 +146,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movement: {fileID: 5556571954577322155}
+  playerRB: {fileID: 0}

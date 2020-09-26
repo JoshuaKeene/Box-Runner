@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 
     bool gameHasEnded = false;
     public float restartDelay = 5f;
-    public GameObject levelFailedUI;
+    public GameObject UI_LevelFailed;
 
     public void EndGame ()
     {
@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     public void LevelFailed ()
     {
-        levelFailedUI.SetActive(true);
+        UI_LevelFailed.SetActive(true);
         Debug.Log("LEVELFAILED");
         Invoke("Restart", restartDelay);
     }
