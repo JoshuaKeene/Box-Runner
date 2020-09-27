@@ -8,13 +8,26 @@ public class GameManager : MonoBehaviour
     public float restartDelay = 5f;
     public GameObject UI_LevelFailed;
 
+    private void Update()
+    {
+        if (UI_LevelFailed.activeInHierarchy && Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
+        if (UI_LevelFailed.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
+        {
+            Restart();
+        }
+    }
+
     public void EndGame ()
     {
         if (gameHasEnded == false)
         {
             gameHasEnded = true;
             Debug.Log("GameOver");
-            Invoke("Restart", restartDelay);
+            //Invoke("Restart", restartDelay);
         }
     }
 
@@ -22,7 +35,7 @@ public class GameManager : MonoBehaviour
     {
         UI_LevelFailed.SetActive(true);
         Debug.Log("LEVELFAILED");
-        Invoke("Restart", restartDelay);
+        //Invoke("Restart", restartDelay);
     }
 
     public void Restart ()

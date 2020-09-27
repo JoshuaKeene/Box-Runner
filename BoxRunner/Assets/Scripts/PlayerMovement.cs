@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -14,7 +17,13 @@ public class PlayerMovement : MonoBehaviour
     public Material ObstacleColour;
     public Material SlowedColour;
 
+    public float timeLeft = 10;
+    public Text pickupTimer;
+
+    float currCountdownValue;
+
     public bool pickupActive = false;
+    public bool timeReset = true;
 
     // Update is called once per frame
     void FixedUpdate()
@@ -31,39 +40,49 @@ public class PlayerMovement : MonoBehaviour
             playerRB.AddForce(-horizontalForce * Time.deltaTime, 0, 0, ForceMode.VelocityChange);
         }
 
-        if (playerRB.position.y < -1f)
+        if (playerRB.position.x < -11f || playerRB.position.x > 11f)
         {
             FindObjectOfType<GameManager>().LevelFailed();
         }
-
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "SlowSpeed")
-        {
-            pickupActive = true;
-            
+        { 
             Destroy(other.gameObject);
-            gameObject.GetComponent<MeshRenderer>().material = SlowedColour;
-            forwardForce = slowedForce;
-            Invoke("restoreSpeed", 5);
+
+            if (!pickupActive)
+            {
+                pickupActive = true;
+                gameObject.GetComponent<MeshRenderer>().material = SlowedColour;
+                forwardForce = slowedForce;
+                pickupTimer.gameObject.SetActive(true);
+                StartCoroutine("StartCountdown", 5);
+                Invoke("restoreSpeed", 5);
+            }
         }
 
         if (other.tag == "PhaseThrough")
         {
-            pickupActive = true;
-
             Destroy(other.gameObject);
-            gameObject.GetComponent<MeshRenderer>().material = ObstacleColour;
-            gameObject.layer = 10;
-            Invoke("restoreLayer", 5);
+
+            if (!pickupActive)
+            {
+                pickupActive = true;
+                gameObject.GetComponent<MeshRenderer>().material = ObstacleColour;
+                gameObject.layer = 10;
+                pickupTimer.gameObject.SetActive(true);
+                StartCoroutine("StartCountdown", 5);
+                Invoke("restoreLayer", 5);
+            }
         }
     }
 
     private void restoreSpeed()
     {
         pickupActive = false;
+        pickupTimer.gameObject.SetActive(false);
 
         forwardForce = regularForce;
         gameObject.GetComponent<MeshRenderer>().material = PlayerColour;
@@ -72,8 +91,24 @@ public class PlayerMovement : MonoBehaviour
     private void restoreLayer()
     {
         pickupActive = false;
+        pickupTimer.gameObject.SetActive(false);
 
         gameObject.layer = 0;
         gameObject.GetComponent<MeshRenderer>().material = PlayerColour;
+    }
+
+    public IEnumerator StartCountdown(float countdownValue)
+    {
+        currCountdownValue = countdownValue;
+        while (currCountdownValue > 0)
+        {
+            pickupTimer.text = currCountdownValue.ToString();
+
+            Debug.Log("Countdown: " + currCountdownValue);
+            yield return new WaitForSeconds(1.0f);
+            currCountdownValue--;
+
+            
+        }
     }
 }
