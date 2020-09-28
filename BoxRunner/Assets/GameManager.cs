@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
         if (UI_LevelFailed.activeInHierarchy && Input.GetKeyDown(KeyCode.Space))
         {
-            Cursor.visible = false;
+            //Cursor.visible = false;
             Restart();
         }
     }
@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
     public void LevelFailed ()
     {
         UI_LevelFailed.SetActive(true);
-        Cursor.visible = true;
+        //Cursor.visible = true;
         Debug.Log("LEVELFAILED");
         //Invoke("Restart", restartDelay);
     }

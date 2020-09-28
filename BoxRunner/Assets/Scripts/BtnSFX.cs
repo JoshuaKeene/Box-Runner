@@ -20,7 +20,8 @@ public class BtnSFX : MonoBehaviour
     public void OnHover()
     {
         if (!TheButton.interactable || !TheButton.enabled) return;
-        Audio.PlayOneShot(AudioManager.GlobalSFXManager.OnHoverClick);
+        Audio.Play();
+        //Audio.PlayOneShot(AudioManager.GlobalSFXManager.OnHoverClick);
     }
 
     public void OnClick()
