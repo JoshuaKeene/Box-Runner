@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
             if (!pickupActive)
             {
                 pickupActive = true;
+                gameObject.GetComponent<AudioSource>().PlayOneShot(AudioManager.GlobalSFXManager.Pickup);
                 gameObject.GetComponent<MeshRenderer>().material = SlowedColour;
                 forwardForce = slowedForce;
                 pickupTimer.gameObject.SetActive(true);
@@ -70,6 +71,7 @@ public class PlayerMovement : MonoBehaviour
             if (!pickupActive)
             {
                 pickupActive = true;
+                gameObject.GetComponent<AudioSource>().PlayOneShot(AudioManager.GlobalSFXManager.Pickup);
                 gameObject.GetComponent<MeshRenderer>().material = ObstacleColour;
                 gameObject.layer = 10;
                 pickupTimer.gameObject.SetActive(true);
